@@ -76,7 +76,7 @@ class LocalDataTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory(dir=root / ".local") as directory:
             consent = Path(directory) / "forged.json"
-            consent.write_text(json.dumps({"granted": True, "interactive_tty": True}))
+            consent.write_text(json.dumps({"granted": True, "interactive_confirmation": True}))
             with self.assertRaises(PreparationError):
                 prepare(root, consent)
 

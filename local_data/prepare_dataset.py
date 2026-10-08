@@ -141,7 +141,7 @@ def prepare(root: Path, consent_path: Path) -> dict[str, Any]:
     required = {"consent_id", "purpose", "granted", "files", "output_dir"}
     if not required.issubset(consent):
         raise PreparationError("consent record is missing required fields")
-    if consent["granted"] is not True or consent.get("interactive_tty") is not True:
+    if consent["granted"] is not True or consent.get("interactive_confirmation") is not True:
         raise PreparationError("consent is not interactively granted")
     if consent["purpose"] != "local-model-training-poc":
         raise PreparationError("consent purpose does not match this training gate")

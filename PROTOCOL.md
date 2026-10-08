@@ -53,7 +53,8 @@ resource ceilings, compensation, material privacy risks, expiry and the limits
 of withdrawal after training.
 
 Approval requires an affirmative interaction with the participant at the time
-of the request. Nodes must not implement `--yes`, environment-variable,
+of the request through a participant-visible terminal or local consent UI.
+Nodes must not implement `--yes`, environment-variable,
 configuration-file, API-default or timeout-based approval. A declined,
 missing, expired, differently scoped or unverifiable receipt is a hard stop.
 Consent for one purpose, job, data scope or model is not consent for another.

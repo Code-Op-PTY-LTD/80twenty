@@ -5,7 +5,8 @@ files without uploading their contents. It is deliberately narrow.
 
 The participant invokes the interactive consent broker, which names each file
 and presents the full disclosure **before any file content is opened**. The
-participant must type `I CONSENT TO LOCAL TRAINING` at a TTY. There is no
+participant must type `I CONSENT TO LOCAL TRAINING` in a terminal or the
+loopback-only consent page. There is no
 `--yes`, environment-variable or unattended approval path. The broker creates
 a signed, purpose-specific receipt below `.local/`; the preparer refuses an
 unsigned, expired, non-interactive or differently scoped receipt.

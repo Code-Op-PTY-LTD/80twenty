@@ -85,8 +85,10 @@ def verify_record(record: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("consent signature is invalid") from exc
     if payload.get("disclosure_version") != DISCLOSURE_VERSION:
         raise ValueError("unsupported consent disclosure")
-    if payload.get("interactive_tty") is not True or payload.get("granted") is not True:
+    if payload.get("interactive_confirmation") is not True or payload.get("granted") is not True:
         raise ValueError("consent was not interactively granted")
+    if payload.get("interaction_channel") not in {"terminal", "loopback_web"}:
+        raise ValueError("unsupported consent interaction channel")
     if datetime.fromisoformat(payload["expires_at"]) <= datetime.now(timezone.utc):
         raise ValueError("consent has expired")
     return payload
@@ -124,6 +126,36 @@ def request_consent(
         print("Declined. No consent receipt was created and no file content was read.")
         return False
 
+    write_consent_record(
+        root=root,
+        files=files,
+        output_dir=output_dir,
+        receipt_path=receipt_path,
+        max_total_bytes=max_total_bytes,
+        notice=notice,
+        interaction_channel="terminal",
+    )
+    print("Consent granted for this purpose and scope. File reading may now begin.")
+    return True
+
+
+def write_consent_record(
+    *,
+    root: Path,
+    files: list[str],
+    output_dir: str,
+    receipt_path: Path,
+    max_total_bytes: int,
+    notice: str,
+    interaction_channel: str,
+) -> dict[str, Any]:
+    if interaction_channel not in {"terminal", "loopback_web"}:
+        raise ValueError("unsupported interaction channel")
+    root = root.resolve()
+    private_root = (root / ".local").resolve()
+    receipt_path = receipt_path.resolve()
+    if private_root not in receipt_path.parents:
+        raise ValueError("consent receipt must remain below .local")
     now = datetime.now(timezone.utc)
     payload = {
         "protocol": "kin/0.1",
@@ -133,7 +165,8 @@ def request_consent(
         "consent_id": secrets.token_hex(16),
         "purpose": "local-model-training-poc",
         "granted": True,
-        "interactive_tty": True,
+        "interactive_confirmation": True,
+        "interaction_channel": interaction_channel,
         "granted_at": now.isoformat(),
         "expires_at": (now + timedelta(hours=24)).isoformat(),
         "files": files,
@@ -155,8 +188,7 @@ def request_consent(
     receipt_path.parent.mkdir(parents=True, exist_ok=True)
     receipt_path.write_text(json.dumps(record, indent=2, sort_keys=True) + "\n")
     os.chmod(receipt_path, 0o600)
-    print("Consent granted for this purpose and scope. File reading may now begin.")
-    return True
+    return record
 
 
 def main() -> int:
@@ -179,4 +211,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
