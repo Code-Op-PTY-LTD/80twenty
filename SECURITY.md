@@ -2,6 +2,12 @@
 
 KIN Seed 0 is experimental and must not be used with personal data, real payments or unattended network access.
 
+Local-data experiments additionally require the interactive consent broker.
+The broker must present the disclosure before content access and has no
+unattended approval mode. This is an application-level gate, not proof of
+informed consent against a compromised host. The first experiment is restricted
+to already-public project documents; personal-data training remains disabled.
+
 ## Report privately
 
 Do not publish exploit details that could expose participant files, signing keys, model checkpoints or payment credentials. Until a dedicated reporting address exists, repository maintainers should enable GitHub private vulnerability reporting before inviting external testing.

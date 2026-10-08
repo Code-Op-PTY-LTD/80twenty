@@ -19,7 +19,7 @@ class LocalBootstrapTests(unittest.TestCase):
         _, digest = BOOTSTRAP.bundle_manifest(ROOT)
         self.assertEqual(
             digest,
-            "f035b937903bd783bd083ede2823e90b8150fc85bb757a7ee5aa41720a506fcc",
+            "7a3ab60bdf11baaf200ef0f3f9d41a5ff6796f0fae6591a228f78c5eef0c1dfb",
         )
 
     def test_audit_rejects_network_and_dynamic_execution(self):

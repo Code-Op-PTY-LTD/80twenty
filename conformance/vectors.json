@@ -32,6 +32,23 @@
       "expected_sha256": "5b7852af5efc01eea038bffc71b9c8875c0daebf75f2aaf2e853dea4dbfd86aa"
     },
     {
+      "id": "reject-noninteractive-consent",
+      "input": {
+        "protocol": "kin/0.1",
+        "type": "consent_receipt",
+        "node_id": "demo-node",
+        "consent_policy_digest": "sha256:example-policy",
+        "scope_digest": "sha256:example-scope",
+        "purpose": "local-model-training-poc",
+        "interactive_confirmation": false,
+        "granted_at": "2026-10-08T10:00:00Z",
+        "expires_at": "2026-10-09T10:00:00Z",
+        "signature": "example"
+      },
+      "expected_valid": false,
+      "expected_reason": "interactive opt-in required"
+    },
+    {
       "id": "reject-wrong-protocol",
       "input": {"protocol": "kin/9.9", "type": "hello", "node_id": "demo-node", "capabilities": []},
       "expected_valid": false,

@@ -19,6 +19,12 @@
     "max_payout": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
     "funding_commitment": {"type": "string", "minLength": 1, "maxLength": 256},
     "settlement_reference": {"type": "string", "minLength": 1, "maxLength": 256},
+    "consent_policy_digest": {"type": "string", "pattern": "^sha256:"},
+    "scope_digest": {"type": "string", "pattern": "^sha256:"},
+    "purpose": {"type": "string", "minLength": 1, "maxLength": 128},
+    "interactive_confirmation": {"const": true},
+    "granted_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
     "capabilities": {
       "type": "array",
       "items": {"type": "string", "maxLength": 64},
@@ -30,6 +36,10 @@
     {
       "if": {"properties": {"type": {"const": "hello"}}},
       "then": {"required": ["node_id", "capabilities"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "consent_receipt"}}},
+      "then": {"required": ["node_id", "consent_policy_digest", "scope_digest", "purpose", "interactive_confirmation", "granted_at", "expires_at", "signature"]}
     },
     {
       "if": {"properties": {"type": {"const": "update"}}},
