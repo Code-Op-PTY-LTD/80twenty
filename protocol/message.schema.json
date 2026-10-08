@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kin.invalid/protocol/0.1/message.schema.json",
+  "title": "KIN 0.1 protocol message",
+  "type": "object",
+  "required": ["protocol", "type"],
+  "properties": {
+    "protocol": {"const": "kin/0.1"},
+    "type": {
+      "enum": ["hello", "consent_receipt", "price_quote", "job", "update", "work_receipt", "validation", "checkpoint", "settlement"]
+    },
+    "node_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "job_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "base_checkpoint": {"type": "string", "pattern": "^sha256:"},
+    "sample_count": {"type": "integer", "minimum": 0},
+    "delta_digest": {"type": "string", "pattern": "^sha256:"},
+    "pricing_version": {"type": "string", "minLength": 1, "maxLength": 64},
+    "currency": {"type": "string", "minLength": 3, "maxLength": 16},
+    "max_payout": {"type": "string", "pattern": "^[0-9]+(\\.[0-9]+)?$"},
+    "funding_commitment": {"type": "string", "minLength": 1, "maxLength": 256},
+    "settlement_reference": {"type": "string", "minLength": 1, "maxLength": 256},
+    "capabilities": {
+      "type": "array",
+      "items": {"type": "string", "maxLength": 64},
+      "uniqueItems": true
+    },
+    "signature": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"type": {"const": "hello"}}},
+      "then": {"required": ["node_id", "capabilities"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "update"}}},
+      "then": {"required": ["node_id", "job_id", "base_checkpoint", "sample_count", "delta_digest"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "price_quote"}}},
+      "then": {"required": ["job_id", "base_checkpoint", "pricing_version", "currency", "max_payout", "funding_commitment"]}
+    },
+    {
+      "if": {"properties": {"type": {"const": "settlement"}}},
+      "then": {"required": ["job_id", "node_id", "currency", "settlement_reference"]}
+    }
+  ],
+  "additionalProperties": true
+}

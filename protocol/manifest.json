@@ -1,0 +1,22 @@
+{
+  "name": "KIN Protocol",
+  "protocol": "kin/0.1",
+  "profile": "genesis",
+  "status": "experimental",
+  "hash": "sha256",
+  "canonical_json": {
+    "encoding": "utf-8",
+    "sort_keys": true,
+    "separators": [",", ":"],
+    "insignificant_whitespace": false
+  },
+  "code_sharing": "forbidden",
+  "personal_data_training": "disabled",
+  "payment": "test-only",
+  "message_types": ["hello", "consent_receipt", "price_quote", "job", "update", "work_receipt", "validation", "checkpoint", "settlement"],
+  "bootstrap": {
+    "preferred_local_model": "gpt-oss:120b",
+    "model_license": "Apache-2.0",
+    "implementation_visibility": "participant-only"
+  }
+}

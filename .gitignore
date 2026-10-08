@@ -1,0 +1,16 @@
+# A KIN specification repository must never collect generated participant code.
+.local/
+generated/
+private-node/
+
+# Local consent, identity and payment material.
+.kin_consent.json
+*.key
+*.pem
+*.wallet
+*.invoice
+
+# Editor and operating-system noise.
+.DS_Store
+__pycache__/
+*.pyc
