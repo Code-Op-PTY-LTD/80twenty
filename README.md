@@ -43,12 +43,16 @@ A participant may use any local model, language, operating system or implementat
 - `protocol/manifest.json` — machine-readable protocol identity.
 - `protocol/message.schema.json` — declarative wire-message schema.
 - `conformance/vectors.json` — public input and expected-result examples.
+- `evidence/gate-0a-conformance.json` — fingerprints and results from two independently generated private nodes.
+- `evidence/bundle-0.1.sha256` — deterministic digest manifest for the bootstrap inputs.
 
 There is intentionally no participant application source code in this bundle.
 
 ## Current evidence
 
-This bundle is intended to be given to the installed seed model. The model must generate a node locally, run the conformance vectors, and report only the results and implementation fingerprint. Passing conformance proves protocol compatibility; it does not prove privacy, security or useful language-model training.
+On 8 October 2026, `gpt-oss:120b` and `qwen3.8:27b-bf16` independently generated different private Python nodes. Both passed all five public vectors plus local checks for deterministic synthetic updates, funded-job enforcement, reversible consent and recursive generated-code rejection. Their source remains gitignored; only fingerprints and results are published.
+
+This is Gate 0a, not the finished privacy proof. A hosted orchestration session observed the generated source while saving and repairing it, so this run cannot establish that generated code never left the participant machine. Gate 0b must move generation, saving, repair and testing into a fully local bootstrap process and verify network denial independently. Passing conformance proves protocol compatibility; it does not prove privacy, security or useful language-model training.
 
 ## Licence
 
