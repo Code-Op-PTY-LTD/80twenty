@@ -5,11 +5,11 @@ KIN Seed 0 is a protocol genesis bundle, not yet a deployable network or newly t
 ## Priority 0 Truthful bootstrap
 
 - Completed in Gate 0a: save and test locally generated implementations from two different seed models.
-- Prove that no generated source or executable leaves either machine.
+- Completed in Gate 0b for the declared local boundary: keep generated source out of stdout, evidence and Git, and run the node with network access denied.
 - Completed in Gate 0a: publish a deterministic specification-bundle digest.
-- Add an independent conformance runner or cross-implementation comparison.
+- Completed in Gate 0b: add an independent local conformance runner and repair loop.
 
-Gate 0a established cross-model behavioural compatibility, but not the no-code-transmission invariant. The next bootstrap build must be fully local, prevent the orchestrator from observing generated source, and have an independent process verify denied network access and the published fingerprints.
+Gate 0a established cross-model behavioural compatibility. Gate 0b established a source-silent local generation path and a network-denied execution boundary. This is not proof against a compromised host, local model service or sandbox implementation; those remain part of the trusted computing base.
 
 ## Priority 1 First network-native learning checkpoint
 
