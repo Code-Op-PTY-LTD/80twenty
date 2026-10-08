@@ -72,4 +72,4 @@ Protocol 0.1 permits only synthetic demonstration updates. Personal-data trainin
 
 ## What 0.1 does not solve
 
-This version does not yet provide secure aggregation, production identity, Sybil resistance, decentralised checkpoint consensus, private-data training, real payment or useful transformer fine-tuning. Those are explicit gates for later versions.
+This version does not yet provide secure aggregation, production identity, Sybil resistance, decentralised checkpoint consensus, private-data training, real payment or general capability improvement. Gate 1a proves only a tiny synthetic transformer fine-tuning task on one machine; the remaining properties are explicit gates for later versions.

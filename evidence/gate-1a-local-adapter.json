@@ -1,0 +1,84 @@
+{
+  "claim": "A real local multi-update LoRA round improved hidden synthetic evaluation loss; it is not yet a multi-machine or independently generated-node result.",
+  "checkpoint": {
+    "adapter_config_sha256": "aaef58541575ecf7148d352dc186e3041067f36fca5902535dd7a69a63653a09",
+    "adapter_sha256": "e449be109826b16b142131df815a33c52b4ea615bc4af497099ebbf5fac80f2c",
+    "format": "MLX LoRA safetensors",
+    "published_weights": false
+  },
+  "compensation": {
+    "accepted_updates": 3,
+    "currency": "ZAR",
+    "real_money_moved": false,
+    "simulated_amount_per_update": 1.5,
+    "simulated_total": 4.5
+  },
+  "created_at": "2026-10-08T15:30:15.881552+00:00",
+  "evaluation": {
+    "aggregate_test_loss": 0.004,
+    "aggregate_test_perplexity": 1.004,
+    "base_test_loss": 6.91,
+    "base_test_perplexity": 1002.098,
+    "examples": 9,
+    "held_out_from_training": true,
+    "metric": "completion-only cross-entropy",
+    "synthetic_only": true
+  },
+  "job": {
+    "base_license": "Apache-2.0",
+    "base_license_file_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+    "base_weights_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+    "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "base_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "examples_per_honest_worker": 24,
+    "fine_tune_type": "LoRA",
+    "iterations_per_honest_worker": 80,
+    "learning_rate": 0.0001,
+    "lora_layers": 8,
+    "lora_rank": 8,
+    "personal_data_allowed": false,
+    "trainable_parameters": 1466000,
+    "worker_identities": 3
+  },
+  "limitations": [
+    "All worker identities ran sequentially on one physical Mac.",
+    "The workers used the public MLX-LM trainer; independently generated private participant implementations remain unproved for Gate 1.",
+    "Identity registration was local and does not provide Sybil resistance.",
+    "Adapter aggregation was a simple arithmetic mean, not secure aggregation.",
+    "The tiny synthetic mapping task demonstrates parameter learning, not general capability improvement.",
+    "No personal data was read and no real payment was made.",
+    "The private checkpoint weights remain gitignored and are identified only by hash."
+  ],
+  "malicious_update": {
+    "envelope_sha256": "881265a04fa535a3a6a7c299177a2befaeb86b6067b91743f335eff1c96589ea",
+    "l2_norm": 13271583.412871277,
+    "reason": "norm_outlier",
+    "signed_by_registered_test_identity": true,
+    "status": "rejected"
+  },
+  "protocol": "kin/0.1",
+  "receipt_sha256": "df9158a83ad36eec1dec8a20b8b2a66d4a44301ed718780b19ddcfec553b94ae",
+  "updates": [
+    {
+      "adapter_sha256": "9f480502b7090e22bfa746726d766ae6ba0bbdb1fd3ae0e880203ebf445de907",
+      "envelope_sha256": "168e96ea45c1c9239dd0083daaeffc488d25a65531998fc2a62318410db48ee8",
+      "l2_norm": 13.2715833993576,
+      "node_id": "node-1",
+      "status": "accepted"
+    },
+    {
+      "adapter_sha256": "686b4cf743f9b61393af54ac3f98f62ca72dc33384c0510ff4a2a8679c5e84eb",
+      "envelope_sha256": "dfdb59912bd5b71558785ed14d92d3b5abc22b7a74e076b4adbf775eec5f4946",
+      "l2_norm": 13.084049956351965,
+      "node_id": "node-2",
+      "status": "accepted"
+    },
+    {
+      "adapter_sha256": "afdfe5c6bbb79a901899311dde3cfec5fcd72e0ec4128182aba058ef979f51ae",
+      "envelope_sha256": "0c8d4669c7d4be46bd7b95430d79d96ce56b7eeb47d34f8968af8052dfb5feb1",
+      "l2_norm": 13.076093823041148,
+      "node_id": "node-3",
+      "status": "accepted"
+    }
+  ]
+}

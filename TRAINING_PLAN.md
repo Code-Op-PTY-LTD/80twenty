@@ -8,6 +8,13 @@ Exit evidence: different implementation fingerprints, identical protocol results
 
 ## Gate 1 Synthetic distributed adapter round
 
+**Status:** Gate 1a local learning proof passed on 8 October 2026. Three signed
+LoRA updates on distinct synthetic shards were accepted, a signed norm outlier
+was rejected, and the averaged adapter improved held-out loss from 6.910 to
+0.004. This does not satisfy the full gate because the workers ran on one Mac
+and were not independently generated participant implementations. See
+`evidence/gate-1a-local-adapter.json`.
+
 Use a small Apache-2.0 open-weight language model that can be trained on available hardware. At least three independently generated nodes receive different synthetic instruction shards and return bounded adapter updates.
 
 Exit evidence: signed updates, at least one rejected malicious update, improved hidden evaluation, hash-linked checkpoint receipt.

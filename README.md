@@ -44,8 +44,11 @@ A participant may use any local model, language, operating system or implementat
 - `protocol/message.schema.json` — declarative wire-message schema.
 - `conformance/vectors.json` — public input and expected-result examples.
 - `bootstrap/local_bootstrap.py` — inspectable local tooling that generates, repairs and tests a private node without emitting its source.
+- `gate1/` — public coordinator and conformance tooling for signed synthetic adapter updates.
+- `requirements-gate1.txt` — pinned local dependencies for the first learning checkpoint.
 - `evidence/gate-0a-conformance.json` — fingerprints and results from two independently generated private nodes.
 - `evidence/gate-0b-local-bootstrap.json` — evidence from the source-silent, network-denied local bootstrap.
+- `evidence/gate-1a-local-adapter.json` — evidence from the first real, local synthetic LoRA round.
 - `evidence/bundle-0.1.sha256` — deterministic digest manifest for the bootstrap inputs.
 
 There is intentionally no participant application source code in this bundle.
@@ -57,6 +60,18 @@ On 8 October 2026, `gpt-oss:120b` and `qwen3.8:27b-bf16` independently generated
 Gate 0b now moves generation, saving, iterative repair and testing into one local process. Its only model endpoint is loopback Ollama. It writes source directly into the gitignored private workspace, never places source in public evidence, and runs the generated node inside a macOS sandbox with networking denied and writes confined to the private workspace. The first Gate 0b receipt passed all ten declared checks after three entirely local generation attempts.
 
 The public bootstrap tool is shared and inspectable; the participant application it creates is not. Gate 0b proves this particular bootstrap and CLI boundary, not that the operating system, Ollama daemon, seed weights, Python runtime or macOS sandbox are uncompromised. Passing conformance still does not prove useful language-model training.
+
+Gate 1a has now executed a real synthetic LoRA round against the Apache-2.0
+Qwen2.5-0.5B-Instruct model. Three signed worker updates were accepted, a
+signed million-scale norm outlier was rejected, and the averaged adapter
+reduced held-out completion loss from `6.910` to `0.004`. The checkpoint and
+private datasets remain gitignored; public evidence identifies them by hash.
+
+This is a learning proof, not the completion of Gate 1. All three identities
+ran sequentially on one Mac and used the public MLX-LM trainer. Independently
+generated private training nodes, separate physical computers, WAN transport,
+Sybil resistance, secure aggregation, personal-data privacy and real payment
+remain unproved.
 
 ## Licence
 

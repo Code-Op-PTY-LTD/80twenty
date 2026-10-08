@@ -13,13 +13,13 @@ Gate 0a established cross-model behavioural compatibility. Gate 0b established a
 
 ## Priority 1 First network-native learning checkpoint
 
-- Select a laptop-trainable Apache-2.0 base model.
-- Define a sparse or low-rank adapter-update format.
-- Produce non-identical synthetic training shards.
-- Replace shared HMAC secrets with public-key node identities.
-- Validate and aggregate three or more independent updates.
-- Reject a correctly signed malicious update.
-- Publish a complete checkpoint provenance receipt.
+- Completed locally in Gate 1a: select a laptop-trainable Apache-2.0 base model.
+- Completed locally in Gate 1a: define a low-rank adapter-update format.
+- Completed locally in Gate 1a: produce non-identical synthetic training shards.
+- Completed locally in Gate 1a: use Ed25519 public-key worker identities.
+- Completed locally in Gate 1a: validate and aggregate three signed updates.
+- Completed locally in Gate 1a: reject a correctly signed norm-outlier update.
+- Remaining for the full gate: repeat with independently generated private nodes on separately administered machines and publish the resulting complete checkpoint provenance receipt.
 
 ## Priority 2 Transport and checkpoint consensus
 
