@@ -15,6 +15,12 @@ was rejected, and the averaged adapter improved held-out loss from 6.910 to
 and were not independently generated participant implementations. See
 `evidence/gate-1a-local-adapter.json`.
 
+**Gate 1b local-data result:** eight already-public project documents were
+approved through the visual consent broker before ingestion. A single private
+adapter improved loss on 81 unseen prompt phrasings from 5.881 to 0.409. This
+proves consent-scoped local adaptation, not personal-data readiness. See
+`evidence/gate-1b-consented-local-data.json`.
+
 Use a small Apache-2.0 open-weight language model that can be trained on available hardware. At least three independently generated nodes receive different synthetic instruction shards and return bounded adapter updates.
 
 Exit evidence: signed updates, at least one rejected malicious update, improved hidden evaluation, hash-linked checkpoint receipt.

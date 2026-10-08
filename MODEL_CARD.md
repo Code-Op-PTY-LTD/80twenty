@@ -6,10 +6,12 @@
 
 `NETWORK-NATIVE MODEL CHECKPOINT` — not yet achieved and therefore not claimed.
 
-`LOCAL LEARNING CHECKPOINT` — Gate 1a produced a private, hash-identified LoRA
-adapter from three accepted signed updates. It passed a tiny held-out synthetic
-task but is not named `KIN-Seed-0` because all workers ran on one Mac and did
-not use independently generated participant implementations.
+`LOCAL LEARNING CHECKPOINTS` — Gate 1a produced a private, hash-identified LoRA
+adapter from three accepted signed updates. Gate 1b produced another private
+adapter from eight visually consented, already-public local documents. Both
+passed their narrow evaluations but neither is named `KIN-Seed-0` because the
+work ran on one Mac and did not use independently generated participant
+implementations on separately administered machines.
 
 ## Bootstrap model
 

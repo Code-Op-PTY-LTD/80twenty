@@ -31,7 +31,8 @@ Gate 0a established cross-model behavioural compatibility. Gate 0b established a
 
 ## Priority 3 Privacy and consent
 
-- Capability-specific, reversible consent receipts.
+- Partially completed in Gate 1b: visual, capability-specific, expiring consent receipts for already-public documents.
+- Remaining: move consent signing and file handles into an OS-isolated native broker and implement deletion receipts.
 - Secure aggregation so no coordinator sees an individual update.
 - Update clipping and measurable privacy accounting.
 - Memorisation, reconstruction and canary leakage testing.

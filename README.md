@@ -45,10 +45,12 @@ A participant may use any local model, language, operating system or implementat
 - `conformance/vectors.json` — public input and expected-result examples.
 - `bootstrap/local_bootstrap.py` — inspectable local tooling that generates, repairs and tests a private node without emitting its source.
 - `gate1/` — public coordinator and conformance tooling for signed synthetic adapter updates.
+- `local_data/` — visual consent broker, private dataset preparer and standalone-client architecture.
 - `requirements-gate1.txt` — pinned local dependencies for the first learning checkpoint.
 - `evidence/gate-0a-conformance.json` — fingerprints and results from two independently generated private nodes.
 - `evidence/gate-0b-local-bootstrap.json` — evidence from the source-silent, network-denied local bootstrap.
 - `evidence/gate-1a-local-adapter.json` — evidence from the first real, local synthetic LoRA round.
+- `evidence/gate-1b-consented-local-data.json` — evidence from visually consented local-document training.
 - `evidence/bundle-0.1.sha256` — deterministic digest manifest for the bootstrap inputs.
 
 There is intentionally no participant application source code in this bundle.
@@ -72,6 +74,14 @@ ran sequentially on one Mac and used the public MLX-LM trainer. Independently
 generated private training nodes, separate physical computers, WAN transport,
 Sybil resistance, secure aggregation, personal-data privacy and real payment
 remain unproved.
+
+Gate 1b then tested the local-data boundary using eight visually consented,
+already-public KIN documents. The participant approved through a loopback-only
+visual prompt before preparation read file contents. A private adapter reduced
+loss across 81 hidden prompt phrasings from `5.881` to `0.409`. Raw text,
+derived examples, paths and weights remain gitignored; only commitments and
+aggregate metrics are public. This proves local adaptation and recall, not
+personal-data safety or broad reasoning improvement.
 
 ## Licence
 

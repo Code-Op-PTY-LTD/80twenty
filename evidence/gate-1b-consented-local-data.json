@@ -1,0 +1,59 @@
+{
+  "claim": "A real local LoRA adapter learned from eight visually consented local project documents without publishing source text, derived examples, paths or weights.",
+  "checkpoint": {
+    "adapter_config_sha256": "0b7fa90d8d9e61cef06ba245cb6efb20edb7e5f5840afb94d17cb5b8d2dc66df",
+    "adapter_sha256": "4b1ddd30fb2f98f5a2d06f9c1d31a1b5aafdcc92fbb1a69051df0c21cbd3e6d5",
+    "format": "MLX LoRA safetensors",
+    "published_weights": false
+  },
+  "consent": {
+    "disclosure_sha256": "6264c09c89cae18b8772cd14c7396d57b062ed9ef5a550c2c40e432c892ce9c9",
+    "expires_at": "2026-10-09T15:52:36.662786+00:00",
+    "file_count": 8,
+    "granted_at": "2026-10-08T15:52:36.662786+00:00",
+    "interaction_channel": "loopback_web",
+    "interactive_confirmation": true,
+    "personal_data_allowed": false,
+    "real_payment": false
+  },
+  "dataset": {
+    "dataset_receipt_sha256": "851d2708647b9b9ac60bde11471bb2deea6d591aea490f46e872ffabcd95d748",
+    "dataset_sha256": "7d391fdae4ba4453b0b073433dfc3edbd0d0a369aa086bf60dfe9009ce45eb33",
+    "hidden_examples": 81,
+    "raw_text_published": false,
+    "section_count": 81,
+    "source_paths_published": false,
+    "total_input_bytes": 32488,
+    "train_examples": 162,
+    "validation_examples": 16
+  },
+  "evaluation": {
+    "adapter_test_loss": 0.409,
+    "adapter_test_perplexity": 1.505,
+    "base_test_loss": 5.881,
+    "base_test_perplexity": 358.14,
+    "completion_only": true,
+    "hidden_prompt_phrasings": true
+  },
+  "job": {
+    "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+    "base_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "base_weights_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+    "iterations": 120,
+    "learning_rate": 0.0001,
+    "lora_layers": 8,
+    "lora_rank": 8,
+    "network_used_for_preparation_or_training": false,
+    "trainable_parameters": 1466000
+  },
+  "limitations": [
+    "The consented documents were already-public project documentation, not personal data.",
+    "Hidden prompts were unseen paraphrases, but their underlying facts and target passages appeared in training.",
+    "The result demonstrates local adaptation and recall, not broad reasoning improvement.",
+    "The current consent broker is an application-level proof and is not yet isolated from the trainer by operating-system permissions.",
+    "No secure aggregation, differential privacy, machine unlearning or personal-data leakage test was performed.",
+    "Revocation cannot remove knowledge already encoded in this private adapter.",
+    "No real payment was made."
+  ],
+  "protocol": "kin/0.1"
+}

@@ -94,6 +94,19 @@ class LocalDataTests(unittest.TestCase):
                     input_func=lambda _: CONFIRMATION,
                 )
 
+    def test_published_local_data_evidence_has_metrics_but_no_paths(self):
+        root = Path(__file__).resolve().parents[1]
+        evidence_path = root / "evidence" / "gate-1b-consented-local-data.json"
+        evidence = json.loads(evidence_path.read_text())
+        self.assertLess(
+            evidence["evaluation"]["adapter_test_loss"],
+            evidence["evaluation"]["base_test_loss"],
+        )
+        self.assertTrue(evidence["consent"]["interactive_confirmation"])
+        self.assertFalse(evidence["dataset"]["raw_text_published"])
+        self.assertFalse(evidence["dataset"]["source_paths_published"])
+        self.assertNotIn(".local/", evidence_path.read_text())
+
 
 if __name__ == "__main__":
     unittest.main()
