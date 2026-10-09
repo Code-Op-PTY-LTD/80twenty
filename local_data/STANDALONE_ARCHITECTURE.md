@@ -68,9 +68,23 @@ promise inside generated code.
 
 ## Growth path
 
-The current loopback UI proves the interaction and receipt format. Before any
-personal-data pilot, move key ownership and file access into the native broker,
-add per-file deselection, accessibility and localisation testing, support
-revocation and deletion receipts, and commission independent privacy and
-security review.
+Gate 1c implements the macOS proof as a native AppKit application. File
+selection is mediated by `NSOpenPanel`, the signing key is stored in Keychain,
+and a separately sandboxed compiled consumer receives only numbered snapshots
+and a signed one-hour capability. Its sandbox denies network access, writes
+outside the job and reads from user homes, external volumes and system
+temporary-data folders. Tests prove an unrelated file cannot be read.
 
+The participant can choose exact files or one or multiple folders. Folder mode
+recursively enumerates every compatible `.md` and `.txt` file only after typed
+approval and explicitly permits personal identifiers. Both modes reject
+obvious credentials and private keys. A high emergency ceiling of 100,000 files
+or 10 GB prevents accidental disk exhaustion without blocking ordinary folders.
+Unsafe or unreadable folder entries are skipped without recording their names
+or paths; the capability records only aggregate exclusion counts and reasons.
+
+Before any personal-data pilot, replace deprecated `sandbox-exec` with a
+separately signed App Sandbox helper or XPC service, add Developer ID signing
+and notarisation, accessibility and localisation testing, revocation and
+deletion receipts, leakage testing, and independent privacy and security
+review.

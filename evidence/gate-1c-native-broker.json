@@ -1,0 +1,64 @@
+{
+  "claim": "A standalone native macOS broker can issue signed, path-free file capabilities and an OS-sandboxed consumer can prepare the approved snapshots while being denied access to an unrelated local file.",
+  "protocol": "kin/0.1",
+  "platform": {
+    "operating_system": "macOS",
+    "companion_framework": "AppKit",
+    "companion_source_sha256": "15bcd455ba71be70bea0ca1a82a50542df5174682e9ae1714626dfebeed28a93",
+    "consumer_source_sha256": "b7065a19e3c22327d5b9d5498075e4d39e7cbdb45b4266ed16922ff5ba1b07e9",
+    "local_companion_binary_sha256": "1de7c9e57540c7bc36f055f763199e7cba777ee672e6907d145a3fcc69922cf2",
+    "local_consumer_binary_sha256": "8ffbf429c05b1f079305e6570ef40d715fe754abd05c433368f104deb159df5f",
+    "code_signature_verified": true,
+    "signature_type": "ad-hoc local development signature",
+    "app_sandbox_entitlement": true,
+    "user_selected_file_entitlement": true,
+    "key_storage": "macOS Keychain"
+  },
+  "capability": {
+    "algorithm": "Ed25519",
+    "expiry_minutes": 60,
+    "exact_numbered_snapshots": true,
+    "original_file_names_recorded": false,
+    "source_paths_recorded": false,
+    "specific_file_mode": true,
+    "one_or_multiple_folder_mode": true,
+    "recursive_everything_compatible_mode": true,
+    "emergency_file_ceiling": 100000,
+    "emergency_byte_ceiling": 10000000000,
+    "confirmation_text_visible": true,
+    "confirmation_ignores_surrounding_whitespace": true,
+    "folder_mode_skips_unsafe_files_instead_of_aborting": true,
+    "excluded_paths_recorded": false,
+    "personal_data_allowed_in_primary_fixture": false,
+    "personal_data_allowed_in_opt_in_fixture": true,
+    "external_network_allowed": false,
+    "real_payment": false
+  },
+  "consumer_sandbox": {
+    "network_denied": true,
+    "writes_outside_job_denied": true,
+    "user_home_reads_denied_except_approved_job": true,
+    "external_volume_reads_denied": true,
+    "temporary_data_reads_denied": true,
+    "unrelated_file_probe_denied": true,
+    "valid_signed_fixture_prepared": true,
+    "personal_data_opt_in_fixture_prepared": true
+  },
+  "verification": {
+    "test_count": 31,
+    "test_failures": 0,
+    "snapshot_tampering_rejected": true,
+    "full_suite_passed": true,
+    "interactive_native_participant_run_recorded": false
+  },
+  "limitations": [
+    "The isolation proof used a synthetic signed fixture; the participant has not yet completed the native app flow recorded in public evidence.",
+    "The local app is ad-hoc signed, not Developer ID signed or notarised.",
+    "The compiled consumer uses deprecated macOS sandbox-exec for measurable POC isolation.",
+    "A production client should use a separately signed App Sandbox helper or XPC service.",
+    "No real personal data was read or trained on; the opt-in fixture used synthetic email-like identifiers.",
+    "Everything-compatible currently means recursive UTF-8 Markdown and text files, not email databases, PDFs, office documents, photographs, audio or video.",
+    "No accessibility, localisation, leakage, revocation, deletion or independent security review is claimed.",
+    "No model training or multi-computer round occurred in Gate 1c itself."
+  ]
+}

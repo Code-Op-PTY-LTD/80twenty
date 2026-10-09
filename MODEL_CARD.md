@@ -1,10 +1,11 @@
-# KIN Seed 0 Model Card
+# Genesis Model Card
 
 ## Status
 
-`GENESIS PROFILE` — ready for local code-generation and conformance testing.
+`HISTORICAL GENESIS PROFILE` — available for local code-generation and
+conformance testing; this is preserved evidence, not the target architecture.
 
-`NETWORK-NATIVE MODEL CHECKPOINT` — not yet achieved and therefore not claimed.
+`GENESIS NETWORK-NATIVE MODEL CHECKPOINT` — not yet achieved and therefore not claimed.
 
 `LOCAL LEARNING CHECKPOINTS` — Gate 1a produced a private, hash-identified LoRA
 adapter from three accepted signed updates. Gate 1b produced another private
@@ -41,7 +42,10 @@ The bootstrap model was created independently of KIN. Calling it a KIN-trained m
 
 ## Naming rule
 
-The planned first native checkpoint is provisionally named `KIN-Seed-0`. Until its training receipt exists, all artefacts must use `KIN Seed 0 Genesis Profile`.
+The first native model family is named **Genesis**. Until a training receipt
+exists, artefacts must say `historical KIN Seed 0 Genesis Profile` or
+`experimental Genesis candidate`. The `80/20-qualified` label additionally
+requires a passing Rolling Frontier result for that exact weight digest.
 
 ## Minimum provenance for a native checkpoint
 
@@ -55,3 +59,4 @@ The planned first native checkpoint is provisionally named `KIN-Seed-0`. Until i
 - privacy configuration;
 - contribution and settlement receipts;
 - final weight digest.
+- Rolling Frontier snapshot, raw results and evaluator output when qualification is claimed.

@@ -1,6 +1,8 @@
 # Architecture Gaps and Build Order
 
-KIN Seed 0 is a protocol genesis bundle, not yet a deployable network or newly trained LLM. These are the remaining layers.
+80Twenty is not yet a deployable network or a frontier-competitive Genesis
+model. The KIN Seed 0 material below is preserved historical proof work; new
+work targets an open Companion and Pulse implementation under Accord.
 
 ## Priority 0 Truthful bootstrap
 
@@ -64,14 +66,31 @@ Gate 0a established cross-model behavioural compatibility. Gate 0b established a
 - Model, dataset and participant-contribution provenance licences.
 - Specialist review of privacy, employment, securities, tax, sanctions, exchange-control and financial-services exposure.
 
-## Priority 7 Product and operations
+## Priority 7 Open implementation, product and operations
 
+- Publish the complete Companion, Pulse, training and evaluation source.
+- Add reproducible builds, public CI, signed releases and dependency provenance.
+- Accept reviewed pull requests under the DCO and Apache-2.0 licence.
 - Human-readable installer and permission experience.
 - Resource, battery, bandwidth, thermal and electricity limits.
 - Monitoring that does not become participant surveillance.
 - Support, incident response, vulnerability disclosure and signed security releases.
 - Sustainable revenue from useful private, regional and specialist models.
 
+## Priority 8 Rolling frontier qualification
+
+- Freeze a dated reference-model set and task-suite digest before evaluation.
+- Measure a frontier envelope across reasoning, coding, factuality, instruction
+  following and representative user tasks.
+- Account for participant compensation, retries, validation, fraud and payment
+  costs rather than reporting only GPU time or customer price.
+- Require the executable 80/20 gate plus independent reproduction before using
+  the `80/20-qualified` label.
+
 ## The critical path
 
-The next credible milestone is not millions of users or a frontier model. It is three separately generated nodes on separately administered machines producing one demonstrably improved small-model adapter, with one malicious update rejected and every contribution recorded in a verifiable receipt chain.
+The next credible milestone is three open-source Pulse nodes on separately
+administered machines producing one demonstrably improved small-model adapter,
+with one malicious update rejected and every contribution recorded in a
+verifiable receipt chain. That proves the distributed path; it does not yet
+prove the 80/20 target.

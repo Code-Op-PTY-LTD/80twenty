@@ -1,4 +1,4 @@
-# A KIN specification repository must never collect generated participant code.
+# Never collect participant data, private derivatives, secrets or local job state.
 .local/
 generated/
 private-node/

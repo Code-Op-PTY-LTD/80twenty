@@ -31,3 +31,29 @@ revocation policy, leakage testing and legal review are substantially stronger.
 
 The first proof uses only this repository's already-public KIN Markdown files.
 That exercises local ingestion and training without touching personal files.
+
+## Gate 1c native broker
+
+`macos/` now builds a standalone native companion. The app uses the macOS file
+picker, carries App Sandbox user-selected-file entitlements, keeps its Ed25519
+identity in Keychain, and issues an expiring capability over numbered file
+snapshots. Original names and paths are not included. The separate compiled
+consumer accepts only a valid capability and runs with network access, writes
+outside the job, and reads of user homes, volumes and temporary-data folders
+denied by the operating system.
+
+The UI supports exact files or one or multiple selected folders. Folder mode
+recursively ingests every compatible `.md` and `.txt` file only after approval,
+and explicitly records that personal identifiers are permitted. Obvious
+credentials and private keys remain forbidden in either mode.
+
+Folder mode skips unreadable or credential-bearing files and continues with
+the remaining safe corpus. Only aggregate exclusion counts and reason classes
+enter the capability; excluded names and paths are not recorded. Exact-file
+mode still rejects an unsafe file explicitly.
+
+This closes the POC's earlier application-only file boundary. It does not make
+personal-data training production-ready: the consumer sandbox uses deprecated
+`sandbox-exec`, the local build is ad-hoc signed rather than Developer ID
+signed and notarised, and no independent review has occurred. No real personal
+data has been used in the published proof.

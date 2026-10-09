@@ -1,4 +1,4 @@
-# Path to the First KIN-Native Model
+# Path to the First Genesis Model
 
 ## Gate 0 Private implementation generation
 
@@ -20,6 +20,18 @@ approved through the visual consent broker before ingestion. A single private
 adapter improved loss on 81 unseen prompt phrasings from 5.881 to 0.409. This
 proves consent-scoped local adaptation, not personal-data readiness. See
 `evidence/gate-1b-consented-local-data.json`.
+
+**Gate 1c native-broker result:** a standalone macOS app now mediates exact
+file selection and consent, stores its signing identity in Keychain, and issues
+one-hour capabilities over numbered snapshots without original names or paths.
+A participant can choose exact files or one or multiple folders for recursive
+compatible-text ingestion. The broader folder scope explicitly permits
+personal identifiers while credentials and private keys remain forbidden.
+A compiled consumer accepted a valid signed fixture, rejected tampering and,
+inside a macOS sandbox, was unable to read an unrelated local file. This closes
+the POC file-discovery boundary but not the production gate: `sandbox-exec` is
+deprecated, the app is only ad-hoc signed, and no real personal data has been
+used. See `evidence/gate-1c-native-broker.json`.
 
 Use a small Apache-2.0 open-weight language model that can be trained on available hardware. At least three independently generated nodes receive different synthetic instruction shards and return bounded adapter updates.
 
@@ -43,11 +55,26 @@ Recruit a small adult cohort under explicit consent. Begin with curated particip
 
 Exit evidence: reconciled payments, consent withdrawal test, deletion test and participant comprehension study.
 
-## Gate 5 KIN Seed 0 release
+## Gate 5 Genesis experimental release
 
 Publish the first network-native adapter or checkpoint only if it improves a declared evaluation suite without unacceptable privacy, safety or provenance failures.
 
 Exit evidence: complete checkpoint provenance, reproducible evaluation, compatible local generation by multiple seed models, licence review and independent security report.
+
+## Gate 6 80/20-qualified Genesis release
+
+Freeze a frontier snapshot, run the public Rolling Frontier evaluation and
+publish the immutable qualification record. Genesis must reach at least 80% of
+the weighted frontier capability envelope, reach the declared minimum in every
+category and cost no more than 20% of the frontier cost per successful task.
+Safety, privacy, provenance and reproducibility are absolute gates and cannot
+be averaged away.
+
+Exit evidence: a result accepted by `frontier/evaluate_release.py`, raw
+benchmark outputs, reference model versions and dates, pricing evidence,
+participant compensation, infrastructure and failure costs, plus independent
+reproduction. A release after the snapshot cut-off does not alter the result;
+it enters the next Genesis release cycle.
 
 ## Initial model choice
 

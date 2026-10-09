@@ -1,4 +1,8 @@
-# Fully local bootstrap
+# Historical fully local bootstrap
+
+This directory preserves the original private-code-generation experiment. It
+is no longer the target software distribution model: 80Twenty's reference
+Companion, Pulse and Accord implementations are public and auditable.
 
 `local_bootstrap.py` is public bootstrap tooling, not a participant node. Its job is to pass the public KIN bundle to an already installed local Ollama model and keep the generated participant implementation private.
 

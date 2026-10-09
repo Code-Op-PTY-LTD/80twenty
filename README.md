@@ -1,15 +1,41 @@
-# KIN Seed 0
+# 80Twenty
 
-KIN Seed 0 is the first executable specification for the Collective Intelligence Network idea.
+80Twenty is an open network intended to produce useful shared intelligence from
+participant-owned compute and explicitly authorised local data. Its target is
+measurable: a qualified Genesis release must deliver at least 80% of the
+contemporary frontier capability envelope at no more than 20% of the frontier
+cost per successful task.
 
-Its central rule is unusual: the network does not distribute a participant application. It distributes an open protocol, an open seed instruction, conformance examples and an open-weight bootstrap model. The bootstrap model generates a fresh private implementation on each participant's machine. That generated implementation is not uploaded, published or compared with any other participant's code.
+The project names are:
+
+- **80Twenty** — the network and project;
+- **Companion** — the participant-facing desktop application;
+- **Accord** — the protocol and shared specification;
+- **Genesis** — the model family;
+- **Pulse** — the asynchronous background service.
+
+The protocol, reference applications, training and evaluation code are open
+source. Anyone may inspect, fork and propose changes to them. Raw participant
+data remains local, and neither source files nor identifying paths become
+network messages. Open source software and private participant data are
+separate requirements; one must never be used as an excuse to weaken the
+other.
+
+This repository began as the KIN Seed 0 proof. Existing evidence and code use
+the historical `kin/0.1` wire identifier and retain that identifier so their
+hashes and claims remain reproducible. The next incompatible wire revision will
+be `accord/0.2`; historical evidence will not be rewritten or relabelled.
 
 ## What is being created
 
-The project has two distinct milestones:
+The project has three distinct milestones:
 
-1. **Genesis profile** — an existing Apache-2.0 open-weight model interprets the seed instruction and generates a private local node. For the first demonstration, the bootstrap model is `gpt-oss:120b` running locally through Ollama.
-2. **KIN Seed 0 checkpoint** — the first model checkpoint produced from accepted distributed learning updates. This will be the first model actually built by the protocol rather than merely used to bootstrap it.
+1. **Historical genesis profile** — an existing Apache-2.0 open-weight model
+   interpreted a seed instruction and generated private experimental nodes.
+2. **Open reference implementation** — Companion, Pulse, Accord conformance,
+   training and evaluation software developed through public review.
+3. **Genesis checkpoint** — the first model checkpoint produced from accepted
+   distributed learning updates. It is not yet claimed.
 
 The genesis profile is implemented here. The native trained checkpoint is not yet claimed.
 
@@ -20,40 +46,55 @@ The genesis profile is implemented here. The native trained checkpoint is not ye
 - The protocol manifest and message schemas.
 - Public conformance examples and expected behavioural results.
 - Signed model updates, validation decisions and checkpoint hashes.
+- The reference implementation, build instructions and conformance tests.
+- Training, evaluation and privacy-accounting code.
+- Genesis weights and sufficient provenance information for permitted releases.
 
 ## What participants do not share
 
-- Generated source code or executables.
 - Raw emails, documents, photographs or other private files.
 - Local file paths, prompts, logs or environment details unless explicitly authorised.
 - Private signing keys.
+- Training excerpts, embeddings or individual updates that could expose a participant.
 
-## Why this is technology agnostic
+## Why Accord remains technology agnostic
 
-A participant may use any local model, language, operating system or implementation strategy. A generated node is accepted because its externally visible messages satisfy the protocol, not because its source resembles a reference program. The protocol is the product; local code is disposable and private.
+A participant may use the published reference client or an independently
+implemented client in any language or operating system. A node is accepted
+because its externally visible messages satisfy Accord and its release is
+authorised by the participant. Alternative implementations may be published
+and reviewed normally. Source code is never carried inside training protocol
+messages.
 
 ## Contents
 
 - `SEED_INSTRUCTION.md` — the instruction supplied to a compatible local model.
 - `PROTOCOL.md` — behaviour, message flow and security boundaries.
+- `ACCORD.md` — the open-source Accord 0.2 successor draft.
 - `COMPENSATION.md` — funded jobs, contribution receipts, settlement and appeals.
 - `MODEL_CARD.md` — the honest status and provenance of the seed.
 - `TRAINING_PLAN.md` — the path to the first network-native checkpoint.
+- `FRONTIER_STANDARD.md` — the Rolling Frontier Standard and 80/20 release claim.
+- `GOVERNANCE.md` — open development and protocol-change rules.
 - `ARCHITECTURE_GAPS.md` — the remaining layers and build order.
 - `protocol/manifest.json` — machine-readable protocol identity.
 - `protocol/message.schema.json` — declarative wire-message schema.
 - `conformance/vectors.json` — public input and expected-result examples.
-- `bootstrap/local_bootstrap.py` — inspectable local tooling that generates, repairs and tests a private node without emitting its source.
+- `bootstrap/local_bootstrap.py` — the preserved historical private-generation experiment.
+- `frontier/` — executable validation of a Genesis release qualification record.
 - `gate1/` — public coordinator and conformance tooling for signed synthetic adapter updates.
 - `local_data/` — visual consent broker, private dataset preparer and standalone-client architecture.
+- `macos/` — native App Sandbox consent broker and compiled capability consumer.
 - `requirements-gate1.txt` — pinned local dependencies for the first learning checkpoint.
 - `evidence/gate-0a-conformance.json` — fingerprints and results from two independently generated private nodes.
 - `evidence/gate-0b-local-bootstrap.json` — evidence from the source-silent, network-denied local bootstrap.
 - `evidence/gate-1a-local-adapter.json` — evidence from the first real, local synthetic LoRA round.
 - `evidence/gate-1b-consented-local-data.json` — evidence from visually consented local-document training.
+- `evidence/gate-1c-native-broker.json` — evidence from native file brokering and OS read isolation.
 - `evidence/bundle-0.1.sha256` — deterministic digest manifest for the bootstrap inputs.
 
-There is intentionally no participant application source code in this bundle.
+Companion and Pulse source belong in the public repository. Private data,
+derived training examples, secrets and local job state do not.
 
 ## Current evidence
 
@@ -83,6 +124,22 @@ derived examples, paths and weights remain gitignored; only commitments and
 aggregate metrics are public. This proves local adaptation and recall, not
 personal-data safety or broad reasoning improvement.
 
+Gate 1c replaces the browser-only interaction proof with a standalone native
+macOS companion. The user selects exact files through the operating-system
+picker, or one or multiple folders for recursive ingestion of every compatible
+text file; only after typed consent does the app enumerate folders and create
+numbered snapshots plus a Keychain-signed, one-hour capability. The broader
+folder mode explicitly permits personal identifiers, while obvious credentials
+and private keys remain forbidden. A compiled consumer runs with network and
+unapproved personal-file reads denied. A valid synthetic capability completed
+preparation, tampering failed closed, and an attempted read of an unrelated
+file was denied. The app is ad-hoc signed and the consumer uses deprecated
+`sandbox-exec`; no real personal data has been used, and this is not yet a
+production personal-data boundary.
+
 ## Licence
 
-The protocol documents, instruction, schemas and vectors are Apache License 2.0. The bootstrap model retains its own Apache License 2.0 terms. Future checkpoints must carry a complete provenance manifest for their base weights and accepted training contributions.
+The repository is Apache License 2.0. Contributions use Developer Certificate
+of Origin sign-off rather than a copyright-assignment CLA. Base models and
+future checkpoints retain their declared compatible terms and must carry a
+complete provenance manifest.

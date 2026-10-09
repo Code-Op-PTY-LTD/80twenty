@@ -1,0 +1,59 @@
+{
+  "standard": "80twenty-frontier/0.1",
+  "candidate": {
+    "name": "Genesis",
+    "version": "example-only",
+    "weights_sha256": "sha256:not-a-real-checkpoint",
+    "accord_version": "accord/0.2-draft"
+  },
+  "snapshot": {
+    "cutoff_at": "2026-10-01T00:00:00Z",
+    "task_set_sha256": "sha256:not-a-real-task-set",
+    "frozen_before_evaluation": true
+  },
+  "references": [
+    {
+      "provider": "example",
+      "model": "frontier-reference",
+      "version": "dated-example",
+      "available_at_cutoff": true
+    }
+  ],
+  "thresholds": {
+    "overall_quality_ratio": 0.8,
+    "category_quality_ratio": 0.7,
+    "cost_ratio": 0.2
+  },
+  "categories": [
+    {"name": "reasoning", "weight": 0.2, "genesis_score": 0.82, "frontier_score": 1.0},
+    {"name": "coding", "weight": 0.2, "genesis_score": 0.81, "frontier_score": 1.0},
+    {"name": "factuality_knowledge", "weight": 0.2, "genesis_score": 0.8, "frontier_score": 1.0},
+    {"name": "instruction_following", "weight": 0.2, "genesis_score": 0.83, "frontier_score": 1.0},
+    {"name": "real_user_tasks", "weight": 0.2, "genesis_score": 0.8, "frontier_score": 1.0}
+  ],
+  "cost": {
+    "currency": "USD",
+    "genesis_total": 19.0,
+    "genesis_successful_tasks": 100,
+    "frontier_total": 100.0,
+    "frontier_successful_tasks": 100,
+    "genesis_components": {
+      "participant_compensation": 8.0,
+      "compute_energy": 4.0,
+      "bandwidth_storage": 1.0,
+      "orchestration_validation": 3.0,
+      "retries_failures_fraud": 2.0,
+      "payment_fees": 1.0
+    },
+    "frontier_components": {
+      "billed_usage": 95.0,
+      "supporting_inference": 5.0
+    }
+  },
+  "gates": {
+    "safety": true,
+    "privacy": true,
+    "provenance": true,
+    "reproducibility": true
+  }
+}
