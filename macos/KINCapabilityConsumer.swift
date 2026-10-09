@@ -123,11 +123,19 @@ func consume(_ job: URL) throws -> [String: Any] {
     var total = 0
     var sections: [(String, String)] = []
     var commitments: [[String: Any]] = []
+    var imageCount = 0
     for (index, file) in files.enumerated() {
         guard let name = file["name"] as? String, URL(fileURLWithPath: name).lastPathComponent == name,
               !seen.contains(name), ["md", "txt"].contains(URL(fileURLWithPath: name).pathExtension.lowercased()),
               let bytes = file["bytes"] as? Int, let digest = file["sha256"] as? String else {
             throw ConsumerError.invalid("snapshot entry is invalid")
+        }
+        let derivedFromImage = file["derived_from"] as? String == "image"
+        if derivedFromImage {
+            guard payload["image_data_allowed"] as? Bool == true, personalDataAllowed else {
+                throw ConsumerError.invalid("image derivative lacks explicit image and personal-data scope")
+            }
+            imageCount += 1
         }
         let url = inputs.appendingPathComponent(name)
         let values = try url.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
@@ -139,7 +147,10 @@ func consume(_ job: URL) throws -> [String: Any] {
         guard findings.isEmpty else { throw ConsumerError.invalid("privacy scan rejected snapshot: \(findings.joined(separator: ","))") }
         let localSections = markdownSections(text)
         sections.append(contentsOf: localSections)
-        commitments.append(["logical_index": index, "bytes": data.count, "sha256": digest, "sections": localSections.count])
+        commitments.append([
+            "logical_index": index, "bytes": data.count, "sha256": digest,
+            "sections": localSections.count, "media_type": derivedFromImage ? "image-derived-text" : "text",
+        ])
         total += data.count
         seen.insert(name)
     }
@@ -178,7 +189,9 @@ func consume(_ job: URL) throws -> [String: Any] {
         "validation_examples": validCount, "hidden_examples": hidden.count,
         "dataset_sha256": hash(dataset), "raw_text_in_receipt": false,
         "source_paths_in_capability": false, "personal_data_allowed": personalDataAllowed,
-        "network_used": false, "native_broker": true,
+        "network_used": false, "native_broker": true, "image_count": imageCount,
+        "image_processing": imageCount == 0 ? "none" : "local_vision_ocr_classification_not_visual_finetuning",
+        "raw_images_in_receipt": false,
     ]
     receipt["receipt_sha256"] = hash(try canonicalJSON(receipt))
     try JSONSerialization.data(withJSONObject: receipt, options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes])

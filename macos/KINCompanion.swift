@@ -1,13 +1,18 @@
 import AppKit
 import CryptoKit
 import Foundation
+import ImageIO
 import Security
 import UniformTypeIdentifiers
+import Vision
 
 private let confirmation = "I CONSENT TO LOCAL TRAINING"
 private let maxFiles = 100_000
 private let maxTotalBytes = 10_000_000_000
-private let keyService = "org.kin.collective.companion"
+private let textExtensions = Set(["md", "txt"])
+private let imageExtensions = Set(["jpg", "jpeg", "png", "heic", "tif", "tiff"])
+private let supportedExtensions = textExtensions.union(imageExtensions)
+private let keyService = "org.80twenty.companion"
 private let keyAccount = "native-capability-signing-key-v1"
 
 private enum BrokerError: LocalizedError {
@@ -77,6 +82,32 @@ private func privacyFindings(_ text: String, allowPersonalData: Bool) -> [String
     }
 }
 
+private func localImageDerivative(_ data: Data) throws -> String {
+    guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+          let image = CGImageSourceCreateImageAtIndex(source, 0, nil) else {
+        throw BrokerError.message("A selected image could not be decoded.")
+    }
+    let textRequest = VNRecognizeTextRequest()
+    textRequest.recognitionLevel = .accurate
+    textRequest.usesLanguageCorrection = true
+    let classificationRequest = VNClassifyImageRequest()
+    let faceRequest = VNDetectFaceRectanglesRequest()
+    try VNImageRequestHandler(cgImage: image).perform([textRequest, classificationRequest, faceRequest])
+
+    let recognised = (textRequest.results ?? []).compactMap { $0.topCandidates(1).first?.string }
+        .joined(separator: " ").replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+    let labels = (classificationRequest.results ?? []).filter { $0.confidence >= 0.15 }.prefix(12)
+        .map { "\($0.identifier) (\(Int($0.confidence * 100))%)" }
+    let faceCount = faceRequest.results?.count ?? 0
+    var derivative = "# Local image observations\n\n"
+    derivative += "Local on-device image analysis found \(faceCount) face-like region(s). Broad classification labels: "
+    derivative += labels.isEmpty ? "no confident labels.\n\n" : labels.joined(separator: ", ") + ".\n\n"
+    if recognised.count >= 10 {
+        derivative += "# Locally recognised image text\n\n" + String(recognised.prefix(4000)) + "\n"
+    }
+    return derivative
+}
+
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var window: NSWindow!
     private var selectedFiles: [URL] = []
@@ -98,7 +129,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         content.spacing = 14
         content.edgeInsets = NSEdgeInsets(top: 24, left: 28, bottom: 24, right: 28)
 
-        let title = NSTextField(labelWithString: "KIN local training consent")
+        let title = NSTextField(labelWithString: "80Twenty local training consent")
         title.font = .systemFont(ofSize: 26, weight: .bold)
         content.addArrangedSubview(title)
         content.addArrangedSubview(NSTextField(wrappingLabelWithString:
@@ -120,7 +151,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         content.addArrangedSubview(outputLabel)
 
         let disclosure = NSTextField(wrappingLabelWithString: """
-        What approval does: each selected UTF-8 Markdown or text file is read locally, privacy-scanned, and copied under a random numbered name into one private job directory. “Everything compatible” recursively includes every .md and .txt file in the folders you choose. It may include personal data such as names, email addresses and phone numbers. Obvious passwords, API keys, cloud keys and private keys are always rejected. A high emergency ceiling of 100,000 files or 10 GB prevents accidental disk exhaustion.
+        What approval does: selected UTF-8 Markdown, text and supported image files are read locally and copied under random numbered names into one private job directory. “Everything compatible” recursively includes .md, .txt, .jpg, .jpeg, .png, .heic, .tif and .tiff files in the folders you choose. Images are analysed locally for OCR text, broad labels and face counts; this trains text knowledge about an image, not visual understanding. Content may include personal data. Obvious passwords, API keys, cloud keys and private keys found in text derivatives are rejected. A high emergency ceiling of 100,000 files or 10 GB prevents accidental disk exhaustion.
 
         The broker signs a 60-minute capability using a key stored in your Keychain. The trainer receives only those snapshots and may run with home-folder and network access denied.
 
@@ -162,7 +193,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 780, height: 760),
                           styleMask: [.titled, .closable, .miniaturizable, .resizable],
                           backing: .buffered, defer: false)
-        window.title = "KIN Companion"
+        window.title = "80Twenty Companion"
         window.contentView = scroll
         window.center()
         window.makeKeyAndOrderFront(nil)
@@ -187,13 +218,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     @objc private func selectFiles() {
         let panel = NSOpenPanel()
         let folderMode = scope.selectedSegment == 1
-        panel.title = folderMode ? "Choose folders for everything-compatible training" : "Choose exact files for this KIN job"
+        panel.title = folderMode ? "Choose folders for everything-compatible training" : "Choose exact files for this 80Twenty job"
         panel.message = "Content will not be opened until you approve in the next step."
         panel.canChooseFiles = !folderMode
         panel.canChooseDirectories = folderMode
         panel.allowsMultipleSelection = true
         if !folderMode {
-            panel.allowedContentTypes = ["md", "txt"].compactMap { UTType(filenameExtension: $0) }
+            panel.allowedContentTypes = supportedExtensions.sorted().compactMap { UTType(filenameExtension: $0) }
         }
         guard panel.runModal() == .OK else { return }
         if folderMode {
@@ -211,7 +242,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func selectOutput() {
         let panel = NSOpenPanel()
-        panel.title = "Choose where KIN may create the private job"
+        panel.title = "Choose where 80Twenty may create the private job"
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.canCreateDirectories = true
@@ -245,7 +276,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 throw BrokerError.message("Choose a private job folder.")
             }
             let jobID = UUID().uuidString.lowercased()
-            let job = parent.appendingPathComponent("KIN-job-\(jobID)", isDirectory: true)
+            let job = parent.appendingPathComponent("80Twenty-job-\(jobID)", isDirectory: true)
             createdJob = job
             let inputs = job.appendingPathComponent("inputs", isDirectory: true)
             let parentAccess = parent.startAccessingSecurityScopedResource()
@@ -265,7 +296,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                         options: [.skipsPackageDescendants]
                     ) else { throw BrokerError.message("A selected folder could not be enumerated.") }
                     for case let candidate as URL in enumerator {
-                        if ["md", "txt"].contains(candidate.pathExtension.lowercased()) {
+                        if supportedExtensions.contains(candidate.pathExtension.lowercased()) {
                             sourceFiles.append(candidate)
                             if sourceFiles.count > maxFiles {
                                 throw BrokerError.message("The job exceeds the 100,000-file emergency safety ceiling.")
@@ -275,10 +306,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
             defer { folderAccess.forEach { $0.stopAccessingSecurityScopedResource() } }
-            guard !sourceFiles.isEmpty else { throw BrokerError.message("No compatible .md or .txt files were found.") }
+            guard !sourceFiles.isEmpty else { throw BrokerError.message("No compatible text or image files were found.") }
+
+            let personalDataAllowed = folderMode || sourceFiles.contains {
+                imageExtensions.contains($0.pathExtension.lowercased())
+            }
 
             var entries: [[String: Any]] = []
-            var total = 0
+            var sourceTotal = 0
+            var snapshotTotal = 0
+            var imageCount = 0
             var excludedFileCount = 0
             var excludedReasons: [String: Int] = [:]
             var seenPaths = Set<String>()
@@ -288,23 +325,41 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 seenPaths.insert(canonicalPath)
                 let access = folderMode ? false : source.startAccessingSecurityScopedResource()
                 defer { if access { source.stopAccessingSecurityScopedResource() } }
-                let ext: String
-                let data: Data
-                let text: String
+                let sourceData: Data
+                let snapshotData: Data
+                let snapshotExtension: String
+                let derivedFromImage: Bool
                 do {
                     let values = try source.resourceValues(forKeys: [.isRegularFileKey, .isSymbolicLinkKey])
                     guard values.isRegularFile == true, values.isSymbolicLink != true else {
                         throw BrokerError.message("A selection is not a regular file or is a symbolic link.")
                     }
-                    ext = source.pathExtension.lowercased()
-                    guard ["md", "txt"].contains(ext) else {
-                        throw BrokerError.message("Only Markdown and text files are accepted.")
+                    let ext = source.pathExtension.lowercased()
+                    guard supportedExtensions.contains(ext) else {
+                        throw BrokerError.message("Only supported text and image files are accepted.")
                     }
-                    data = try Data(contentsOf: source, options: [.mappedIfSafe])
-                    guard let decoded = String(data: data, encoding: .utf8) else {
-                        throw BrokerError.message("A selected file is not UTF-8 text.")
+                    sourceData = try Data(contentsOf: source, options: [.mappedIfSafe])
+                    if textExtensions.contains(ext) {
+                        guard let decoded = String(data: sourceData, encoding: .utf8) else {
+                            throw BrokerError.message("A selected text file is not UTF-8.")
+                        }
+                        let findings = privacyFindings(decoded, allowPersonalData: personalDataAllowed)
+                        guard findings.isEmpty else {
+                            throw BrokerError.message("Privacy scan rejected a selected file: \(findings.joined(separator: ", ")).")
+                        }
+                        snapshotData = sourceData
+                        snapshotExtension = ext
+                        derivedFromImage = false
+                    } else {
+                        let derivative = try localImageDerivative(sourceData)
+                        let findings = privacyFindings(derivative, allowPersonalData: true)
+                        guard findings.isEmpty else {
+                            throw BrokerError.message("Privacy scan rejected an image derivative: \(findings.joined(separator: ", ")).")
+                        }
+                        snapshotData = Data(derivative.utf8)
+                        snapshotExtension = "txt"
+                        derivedFromImage = true
                     }
-                    text = decoded
                 } catch {
                     if folderMode {
                         excludedFileCount += 1
@@ -313,23 +368,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     }
                     throw error
                 }
-                total += data.count
-                guard total <= maxTotalBytes else {
+                sourceTotal += sourceData.count
+                guard sourceTotal <= maxTotalBytes else {
                     throw BrokerError.message("Selected content exceeds the 10 GB emergency safety ceiling.")
                 }
-                let findings = privacyFindings(text, allowPersonalData: folderMode)
-                if !findings.isEmpty {
-                    if folderMode {
-                        excludedFileCount += 1
-                        for finding in findings { excludedReasons[finding, default: 0] += 1 }
-                        total -= data.count
-                        continue
-                    }
-                    throw BrokerError.message("Privacy scan rejected a selected file: \(findings.joined(separator: ", ")).")
+                snapshotTotal += snapshotData.count
+                let name = String(format: "%06d.%@", entries.count, snapshotExtension)
+                try snapshotData.write(to: inputs.appendingPathComponent(name), options: [.atomic])
+                var entry: [String: Any] = [
+                    "name": name, "bytes": snapshotData.count, "sha256": sha256(snapshotData),
+                ]
+                if derivedFromImage {
+                    entry["derived_from"] = "image"
+                    entry["source_media_sha256"] = sha256(sourceData)
+                    imageCount += 1
                 }
-                let name = String(format: "%06d.%@", entries.count, ext)
-                try data.write(to: inputs.appendingPathComponent(name), options: [.atomic])
-                entries.append(["name": name, "bytes": data.count, "sha256": sha256(data)])
+                entries.append(entry)
             }
             guard !entries.isEmpty else {
                 throw BrokerError.message("No safe compatible files remained after local scanning.")
@@ -337,8 +391,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
             let created = Date()
             let disclosure = folderMode
-                ? "KIN native local training; everything compatible in selected folders; personal data allowed; no network; no real payment; withdrawal cannot untrain an existing model."
-                : "KIN native local training; exact selected files; no personal data; no network; no real payment; withdrawal cannot untrain an existing model."
+                ? "80Twenty local training; every compatible text and image file in selected folders; personal data allowed; local image OCR and classification; no network; no real payment; withdrawal cannot untrain an existing model."
+                : "80Twenty local training; exact selected text and image files; personal data allowed when images are selected; local image OCR and classification; no network; no real payment; withdrawal cannot untrain an existing model."
             let payload: [String: Any] = [
                 "protocol": "kin/0.1",
                 "type": "file_capability",
@@ -351,9 +405,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 "created_at": isoDate(created),
                 "expires_at": isoDate(created.addingTimeInterval(3600)),
                 "files": entries,
-                "total_input_bytes": total,
+                "total_input_bytes": snapshotTotal,
+                "source_total_bytes": sourceTotal,
                 "max_total_bytes": maxTotalBytes,
-                "personal_data_allowed": folderMode,
+                "personal_data_allowed": personalDataAllowed,
+                "image_data_allowed": imageCount > 0,
+                "image_count": imageCount,
+                "image_processing": imageCount == 0 ? "none" : "local_vision_ocr_classification_not_visual_finetuning",
                 "external_network_allowed": false,
                 "real_payment": false,
                 "source_paths_recorded": false,

@@ -19,6 +19,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 
 CAPABILITY_VERSION = "kin-file-capability/0.1"
+TEXT_EXTENSIONS = {".md", ".txt"}
 
 
 class CapabilityError(RuntimeError):
@@ -78,6 +79,7 @@ def verify_capability(job_dir: Path) -> dict[str, Any]:
 
     total = 0
     names: set[str] = set()
+    contains_image = False
     inputs = (job_dir / "inputs").resolve()
     for item in files:
         if not isinstance(item, dict):
@@ -85,8 +87,16 @@ def verify_capability(job_dir: Path) -> dict[str, Any]:
         name = item.get("name")
         if not isinstance(name, str) or name in names or Path(name).name != name:
             raise CapabilityError("snapshot name is invalid or repeated")
-        if Path(name).suffix.lower() not in {".md", ".txt"}:
+        if Path(name).suffix.lower() not in TEXT_EXTENSIONS:
             raise CapabilityError("snapshot extension is not authorised")
+        derived_from = item.get("derived_from")
+        if derived_from is not None and derived_from != "image":
+            raise CapabilityError("snapshot derivative provenance is invalid")
+        if derived_from == "image":
+            source_digest = item.get("source_media_sha256")
+            if not isinstance(source_digest, str) or len(source_digest) != 64:
+                raise CapabilityError("image derivative lacks a source commitment")
+            contains_image = True
         path = (inputs / name).resolve()
         if not _inside(inputs, path) or path.is_symlink() or not path.is_file():
             raise CapabilityError("snapshot is absent, linked, or outside the job")
@@ -97,4 +107,9 @@ def verify_capability(job_dir: Path) -> dict[str, Any]:
         names.add(name)
     if total > byte_ceiling or total != payload.get("total_input_bytes"):
         raise CapabilityError("snapshot total violates its signed byte scope")
+    if contains_image and (
+        payload.get("image_data_allowed") is not True
+        or payload.get("personal_data_allowed") is not True
+    ):
+        raise CapabilityError("image snapshot lacks explicit image and personal-data scope")
     return payload

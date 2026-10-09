@@ -1,0 +1,39 @@
+{
+  "gate": "1d-progressive-local-training",
+  "recorded_at": "2026-10-09T07:32:46.808879+00:00",
+  "protocol": "kin/0.1",
+  "project": "80Twenty",
+  "model": {
+    "base": "Qwen/Qwen2.5-0.5B-Instruct",
+    "base_weights_sha256": "fdf756fa7fcbe7404d5c60e26bff1a0c8b8aa1f72ced49e7dd0210fe288fb7fe",
+    "fine_tune_type": "LoRA",
+    "iterations_per_round": 10
+  },
+  "dataset": {
+    "source_dataset_sha256": "cf762006d093299e83d71b2ff4e7c564ab296aa6280cfe479464ae7d51b1400e",
+    "source_scope": "already-public documents approved in the prior local-data consent proof",
+    "frozen_hidden_set": true,
+    "raw_text_published": false,
+    "source_paths_published": false
+  },
+  "progression": [
+    {"label": "base", "corpus_fraction": 0.0, "train_examples": 0, "test_loss": 5.640},
+    {"label": "round-1", "corpus_fraction": 0.25, "train_examples": 40, "test_loss": 4.992},
+    {"label": "round-2", "corpus_fraction": 0.5, "train_examples": 81, "test_loss": 4.813},
+    {"label": "round-3", "corpus_fraction": 1.0, "train_examples": 162, "test_loss": 4.771}
+  ],
+  "private_report": {
+    "contains_actual_inputs_expected_passages_and_outputs": true,
+    "published": false,
+    "sha256": "35d61ef44ca29a3370e752dde8bc8879f937aa59fe22e94cc5e1cd511259fdea"
+  },
+  "network_used": false,
+  "result": "pass",
+  "claim": "Increasing the available consented corpus across three cumulative local rounds reduced loss on one unchanged hidden set and produced visibly changing answers.",
+  "limitations": [
+    "The corpus consisted of already-public project documents, not personal files.",
+    "The experiment ran on one Mac and one small base model.",
+    "Lower local-knowledge loss does not establish improved general reasoning, safety or frontier capability.",
+    "The private HTML report must not be committed because it contains derived source passages."
+  ]
+}

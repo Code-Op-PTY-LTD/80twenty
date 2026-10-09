@@ -84,13 +84,14 @@ messages.
 - `frontier/` — executable validation of a Genesis release qualification record.
 - `gate1/` — public coordinator and conformance tooling for signed synthetic adapter updates.
 - `local_data/` — visual consent broker, private dataset preparer and standalone-client architecture.
-- `macos/` — native App Sandbox consent broker and compiled capability consumer.
+- `macos/` — 80Twenty Companion, native App Sandbox consent broker, local image derivation and compiled capability consumer.
 - `requirements-gate1.txt` — pinned local dependencies for the first learning checkpoint.
 - `evidence/gate-0a-conformance.json` — fingerprints and results from two independently generated private nodes.
 - `evidence/gate-0b-local-bootstrap.json` — evidence from the source-silent, network-denied local bootstrap.
 - `evidence/gate-1a-local-adapter.json` — evidence from the first real, local synthetic LoRA round.
 - `evidence/gate-1b-consented-local-data.json` — evidence from visually consented local-document training.
 - `evidence/gate-1c-native-broker.json` — evidence from native file brokering and OS read isolation.
+- `evidence/gate-1d-progressive-local-training.json` — cumulative corpus fractions, frozen-set losses and private-report commitment.
 - `evidence/bundle-0.1.sha256` — deterministic digest manifest for the bootstrap inputs.
 
 Companion and Pulse source belong in the public repository. Private data,
@@ -136,6 +137,18 @@ preparation, tampering failed closed, and an attempted read of an unrelated
 file was denied. The app is ad-hoc signed and the consumer uses deprecated
 `sandbox-exec`; no real personal data has been used, and this is not yet a
 production personal-data boundary.
+
+A later local run added a cumulative training view over the same already-public
+consented corpus. Against one frozen hidden set, test loss moved from `5.640`
+for the base model to `4.992`, `4.813` and `4.771` as the available corpus grew
+from 25% to 50% to 100%. A private HTML report shows actual inputs and outputs.
+This demonstrates incremental local knowledge learning, not frontier quality.
+
+Companion also accepts common images under an explicit personal-data scope.
+macOS Vision locally derives OCR text, broad labels and face counts; the raw
+image is not copied into the trainer job. The current text model can learn from
+those derivatives, but this is deliberately not described as visual-model
+training.
 
 ## Licence
 

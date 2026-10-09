@@ -38,6 +38,10 @@ def _render_card(index: int, row: dict[str, str], base: str, adapter: str) -> st
 def build_report(job_dir: Path, model_path: Path, *, examples: int = 3) -> dict[str, object]:
     job_dir = job_dir.resolve()
     test_path = job_dir / "derived" / "test.jsonl"
+    if not test_path.is_file():
+        # Gate 1b predates native capabilities and stored private derivatives
+        # directly below its already-private job directory.
+        test_path = job_dir / "test.jsonl"
     adapter_path = job_dir / "adapter"
     rows: list[dict[str, str]] = []
     with test_path.open() as handle:

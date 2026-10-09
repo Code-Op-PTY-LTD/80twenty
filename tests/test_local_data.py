@@ -22,6 +22,7 @@ from local_data.recover_native_job import RecoveryError, recover
 class LocalDataTests(unittest.TestCase):
     def _native_capability_job(
         self, root: Path, parent: Path, *, personal_data_allowed: bool = False,
+        include_image: bool = False,
     ) -> Path:
         job = parent / ("native-personal-job" if personal_data_allowed else "native-job")
         inputs = job / "inputs"
@@ -33,6 +34,23 @@ class LocalDataTests(unittest.TestCase):
         ).encode()
         source = inputs / "000.md"
         source.write_bytes(raw)
+        files = [{"name": "000.md", "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}]
+        total_bytes = len(raw)
+        if include_image:
+            source_media = b"synthetic-image-source-commitment"
+            derivative = (
+                b"# Local image observations\n\n"
+                b"Local on-device image analysis found no faces and classified a synthetic blue square.\n"
+            )
+            (inputs / "001.txt").write_bytes(derivative)
+            files.append({
+                "name": "001.txt",
+                "bytes": len(derivative),
+                "sha256": hashlib.sha256(derivative).hexdigest(),
+                "derived_from": "image",
+                "source_media_sha256": hashlib.sha256(source_media).hexdigest(),
+            })
+            total_bytes += len(derivative)
         now = datetime.now(timezone.utc)
         payload = {
             "protocol": "kin/0.1",
@@ -45,10 +63,11 @@ class LocalDataTests(unittest.TestCase):
             "interaction_channel": "macos_native",
             "created_at": now.isoformat(),
             "expires_at": (now + timedelta(hours=1)).isoformat(),
-            "files": [{"name": "000.md", "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}],
-            "total_input_bytes": len(raw),
+            "files": files,
+            "total_input_bytes": total_bytes,
             "max_total_bytes": 2_000_000,
             "personal_data_allowed": personal_data_allowed,
+            "image_data_allowed": include_image,
             "external_network_allowed": False,
             "real_payment": False,
             "source_paths_recorded": False,
@@ -232,11 +251,19 @@ class LocalDataTests(unittest.TestCase):
             self.assertTrue(receipt["native_broker"])
             self.assertFalse(receipt["source_paths_in_capability"])
             self.assertFalse(receipt["personal_data_allowed"])
-            personal_job = self._native_capability_job(root, Path(directory), personal_data_allowed=True)
+            personal_job = self._native_capability_job(
+                root, Path(directory), personal_data_allowed=True, include_image=True
+            )
             personal = run(personal_job)
             self.assertEqual(personal.returncode, 0, personal.stderr)
             personal_receipt = json.loads((personal_job / "derived" / "dataset-receipt.json").read_text())
             self.assertTrue(personal_receipt["personal_data_allowed"])
+            self.assertEqual(personal_receipt["image_count"], 1)
+            self.assertEqual(
+                personal_receipt["image_processing"],
+                "local_vision_ocr_classification_not_visual_finetuning",
+            )
+            self.assertFalse(personal_receipt["raw_images_in_receipt"])
             with tempfile.NamedTemporaryFile() as outside:
                 outside.write(b"must remain unreadable")
                 outside.flush()

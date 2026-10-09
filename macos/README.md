@@ -1,4 +1,4 @@
-# KIN Companion for macOS
+# 80Twenty Companion for macOS
 
 This is the first standalone participant safety broker. It is public and
 reviewable because it is part of the trusted safety boundary; generated
@@ -12,7 +12,7 @@ Build locally:
 
 The build creates two ignored local artifacts:
 
-- `.local/dist/KIN Companion.app` — native visual consent and file-selection
+- `.local/dist/80Twenty Companion.app` — native visual consent and file-selection
   broker, ad-hoc signed with App Sandbox and user-selected-file entitlements.
 - `.local/bin/kin-capability-consumer` — minimal compiled dataset consumer.
 
@@ -25,9 +25,12 @@ snapshots each accepted file
 under a numbered name, and signs a one-hour capability with an Ed25519 key held
 in macOS Keychain. Original names and paths are not written to the capability.
 
-Specific-file mode rejects personal identifiers. Everything-compatible mode
-explicitly permits personal identifiers after the stronger scope disclosure,
-but always rejects obvious credentials and private keys. A high emergency
+Specific-file text mode rejects personal identifiers. Selecting an image, or
+using everything-compatible mode, explicitly permits personal identifiers
+after the stronger scope disclosure. Images are converted locally into OCR,
+broad classification and face-count text; this is language-model training
+about image contents, not visual fine-tuning. Obvious credentials and private
+keys found in text derivatives are rejected. A high emergency
 ceiling of 100,000 files or 10 GB prevents accidental disk exhaustion. Other
 document and media formats are not yet supported and must not be implied by the
 word "everything."
@@ -42,7 +45,7 @@ Consume an approved job from the repository root:
 
 ```sh
 .local/gate1-venv/bin/python -m local_data.run_sandboxed_capability \
-  --job-dir '/path/chosen/by/participant/KIN-job-...'
+  --job-dir '/path/chosen/by/participant/80Twenty-job-...'
 ```
 
 The runner verifies the signature and commitments before starting the compiled

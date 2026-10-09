@@ -4,10 +4,10 @@
   "platform": {
     "operating_system": "macOS",
     "companion_framework": "AppKit",
-    "companion_source_sha256": "15bcd455ba71be70bea0ca1a82a50542df5174682e9ae1714626dfebeed28a93",
-    "consumer_source_sha256": "b7065a19e3c22327d5b9d5498075e4d39e7cbdb45b4266ed16922ff5ba1b07e9",
-    "local_companion_binary_sha256": "1de7c9e57540c7bc36f055f763199e7cba777ee672e6907d145a3fcc69922cf2",
-    "local_consumer_binary_sha256": "8ffbf429c05b1f079305e6570ef40d715fe754abd05c433368f104deb159df5f",
+    "companion_source_sha256": "3df456ede635c602bafbaab7f3f4f191b664f13826c4a2f53c5307afc26b847d",
+    "consumer_source_sha256": "9c3401d47aeafe5a758bf5b3df3687cdd291c34ea691de1199538c520578cd6c",
+    "local_companion_binary_sha256": "73776f75445aadd5b217f222816cbc2f2450619ce9a419cecae54eba1e382eea",
+    "local_consumer_binary_sha256": "2a83f507da566b815f3b9a5eec87a3ba366ea0d03a0b700bc99c035bf85887af",
     "code_signature_verified": true,
     "signature_type": "ad-hoc local development signature",
     "app_sandbox_entitlement": true,
@@ -31,6 +31,10 @@
     "excluded_paths_recorded": false,
     "personal_data_allowed_in_primary_fixture": false,
     "personal_data_allowed_in_opt_in_fixture": true,
+    "common_image_selection": true,
+    "image_derivation": "local_vision_ocr_classification_and_face_count_to_private_text",
+    "raw_images_copied_to_trainer_job": false,
+    "visual_model_finetuning_claimed": false,
     "external_network_allowed": false,
     "real_payment": false
   },
@@ -45,7 +49,7 @@
     "personal_data_opt_in_fixture_prepared": true
   },
   "verification": {
-    "test_count": 31,
+    "test_count": 32,
     "test_failures": 0,
     "snapshot_tampering_rejected": true,
     "full_suite_passed": true,
@@ -57,7 +61,8 @@
     "The compiled consumer uses deprecated macOS sandbox-exec for measurable POC isolation.",
     "A production client should use a separately signed App Sandbox helper or XPC service.",
     "No real personal data was read or trained on; the opt-in fixture used synthetic email-like identifiers.",
-    "Everything-compatible currently means recursive UTF-8 Markdown and text files, not email databases, PDFs, office documents, photographs, audio or video.",
+    "Everything-compatible currently means recursive UTF-8 Markdown, text and common image files, not email databases, PDFs, office documents, audio or video.",
+    "Image inputs produce private OCR, broad-label and face-count text for language-model training; no visual-model fine-tuning is claimed.",
     "No accessibility, localisation, leakage, revocation, deletion or independent security review is claimed.",
     "No model training or multi-computer round occurred in Gate 1c itself."
   ]

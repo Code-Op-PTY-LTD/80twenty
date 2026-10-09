@@ -33,6 +33,19 @@ the POC file-discovery boundary but not the production gate: `sandbox-exec` is
 deprecated, the app is only ad-hoc signed, and no real personal data has been
 used. See `evidence/gate-1c-native-broker.json`.
 
+**Progressive-training result:** using the already-consented public-document
+corpus and one frozen hidden set, a new cumulative runner measured test loss of
+`5.640` for the base model, `4.992` after 25% of the corpus, `4.813` after 50%
+and `4.771` after 100%. The private report contains actual prompts and outputs;
+the public evidence contains only counts, hashes and aggregate losses. This is
+a small local knowledge-learning demonstration, not general capability gain.
+
+**Initial image path:** Companion can now accept common image formats under an
+explicit personal-data scope and use local macOS Vision OCR, broad labels and
+face counts to create private text derivatives. This lets the current language
+adapter learn facts represented in images without copying raw images into its
+job. It is not yet multimodal or visual fine-tuning.
+
 Use a small Apache-2.0 open-weight language model that can be trained on available hardware. At least three independently generated nodes receive different synthetic instruction shards and return bounded adapter updates.
 
 Exit evidence: signed updates, at least one rejected malicious update, improved hidden evaluation, hash-linked checkpoint receipt.
